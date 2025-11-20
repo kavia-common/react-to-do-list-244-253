@@ -1,47 +1,147 @@
-import React, { useState, useEffect } from 'react';
-import logo from './logo.svg';
+import React, { useState, useEffect, useRef } from 'react';
 import './App.css';
 
 // PUBLIC_INTERFACE
 function App() {
-  const [theme, setTheme] = useState('light');
+  // Fetch tasks from localStorage or initialize empty
+  const [tasks, setTasks] = useState(() => {
+    const saved = localStorage.getItem('tasks');
+    return saved ? JSON.parse(saved) : [];
+  });
+  const [input, setInput] = useState('');
+  const inputRef = useRef();
 
-  // Effect to apply theme to document element
+  // Save to localStorage on tasks change
   useEffect(() => {
-    document.documentElement.setAttribute('data-theme', theme);
-  }, [theme]);
+    localStorage.setItem('tasks', JSON.stringify(tasks));
+  }, [tasks]);
+
+  // Accessibility: focus input on mount
+  useEffect(() => {
+    inputRef.current?.focus();
+  }, []);
 
   // PUBLIC_INTERFACE
-  const toggleTheme = () => {
-    setTheme(prevTheme => prevTheme === 'light' ? 'dark' : 'light');
-  };
+  function handleInputChange(e) {
+    setInput(e.target.value);
+  }
+
+  // PUBLIC_INTERFACE
+  function handleAddTask(e) {
+    e.preventDefault();
+    const trimmed = input.trim();
+    if (!trimmed) return;
+    setTasks([
+      ...tasks,
+      {
+        id: Date.now(),
+        text: trimmed,
+        completed: false,
+      },
+    ]);
+    setInput('');
+    inputRef.current?.focus();
+  }
+
+  // PUBLIC_INTERFACE
+  function handleDeleteTask(id) {
+    setTasks(tasks.filter(t => t.id !== id));
+  }
+
+  // PUBLIC_INTERFACE
+  function handleToggleTask(id) {
+    setTasks(tasks.map(t =>
+      t.id === id ? { ...t, completed: !t.completed } : t
+    ));
+  }
+
+  // Handle Enter key for input
+  function handleInputKeyDown(e) {
+    if (e.key === 'Enter' && input.trim()) {
+      handleAddTask(e);
+    }
+  }
 
   return (
-    <div className="App">
-      <header className="App-header">
-        <button 
-          className="theme-toggle" 
-          onClick={toggleTheme}
-          aria-label={`Switch to ${theme === 'light' ? 'dark' : 'light'} mode`}
-        >
-          {theme === 'light' ? '🌙 Dark' : '☀️ Light'}
-        </button>
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <p>
-          Current theme: <strong>{theme}</strong>
-        </p>
+    <div className="todo-bg">
+      <main className="todo-main-card" role="main" aria-label="Todo application">
+        <h1 className="todo-title">Todo List</h1>
+        <form className="todo-addform" onSubmit={handleAddTask} autoComplete="off">
+          <label htmlFor="task-input" className="visually-hidden">
+            Add new todo
+          </label>
+          <input
+            id="task-input"
+            ref={inputRef}
+            className="todo-input"
+            type="text"
+            value={input}
+            onChange={handleInputChange}
+            onKeyDown={handleInputKeyDown}
+            placeholder="What needs to be done?"
+            aria-label="Task to add"
+            required
+          />
+          <button
+            type="submit"
+            className="todo-btn todo-btn-blue"
+            aria-label="Add todo"
+            disabled={!input.trim()}
+          >
+            Add
+          </button>
+        </form>
+        <ul className="todo-list" aria-label="Todo list">
+          {tasks.length === 0 ? (
+            <li className="todo-empty" tabIndex="0">No tasks yet</li>
+          ) : (
+            tasks.map(task => (
+              <li key={task.id} className="todo-item">
+                <button
+                  className={`todo-checkbox${task.completed ? ' checked' : ''}`}
+                  aria-checked={task.completed}
+                  aria-label={task.completed ? "Mark as incomplete" : "Mark as complete"}
+                  role="checkbox"
+                  tabIndex="0"
+                  onClick={() => handleToggleTask(task.id)}
+                  onKeyDown={(e) => {
+                    if (e.key === ' ' || e.key === 'Enter') handleToggleTask(task.id);
+                  }}
+                >
+                  {task.completed && (
+                    <span className="todo-checkbox-icon" aria-hidden="true">&#10003;</span>
+                  )}
+                </button>
+                <span
+                  className={`todo-text${task.completed ? ' completed' : ''}`}
+                  tabIndex="0"
+                  aria-label={task.text + (task.completed ? " (completed)" : "")}
+                >
+                  {task.text}
+                </span>
+                <button
+                  className="todo-btn todo-btn-red"
+                  aria-label="Delete todo"
+                  onClick={() => handleDeleteTask(task.id)}
+                  tabIndex="0"
+                >
+                  Delete
+                </button>
+              </li>
+            ))
+          )}
+        </ul>
+      </main>
+      <footer className="todo-footer">
         <a
-          className="App-link"
           href="https://reactjs.org"
+          className="todo-footer-link"
           target="_blank"
           rel="noopener noreferrer"
         >
-          Learn React
+          Built with React
         </a>
-      </header>
+      </footer>
     </div>
   );
 }
