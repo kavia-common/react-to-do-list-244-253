@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import './App.css';
-
+import Button from './components/Button';
 // PUBLIC_INTERFACE
 function App() {
   // Fetch tasks from localStorage or initialize empty
@@ -82,14 +82,16 @@ function App() {
             aria-label="Task to add"
             required
           />
-          <button
+          <Button
             type="submit"
-            className="todo-btn todo-btn-blue"
+            variant="primary"
+            size="md"
             aria-label="Add todo"
             disabled={!input.trim()}
+            className="todo-btn"
           >
             Add
-          </button>
+          </Button>
         </form>
         <ul className="todo-list" aria-label="Todo list">
           {tasks.length === 0 ? (
@@ -119,14 +121,16 @@ function App() {
                 >
                   {task.text}
                 </span>
-                <button
-                  className="todo-btn todo-btn-red"
+                <Button
+                  variant="danger"
+                  size="sm"
                   aria-label="Delete todo"
                   onClick={() => handleDeleteTask(task.id)}
                   tabIndex="0"
+                  className="todo-btn todo-btn-red"
                 >
                   Delete
-                </button>
+                </Button>
               </li>
             ))
           )}

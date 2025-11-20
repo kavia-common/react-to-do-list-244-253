@@ -1,0 +1,138 @@
+.kavia-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-family: inherit;
+  border: none;
+  outline: none;
+  border-radius: var(--btn-radius, .5rem);
+  font-weight: 600;
+  cursor: pointer;
+  transition: var(--transition, all 0.18s cubic-bezier(.4,.7,.1,1));
+  background: none;
+  min-width: 64px;
+  white-space: nowrap;
+  position: relative;
+  user-select: none;
+  text-decoration: none;
+}
+
+.kavia-btn:focus-visible, .kavia-btn:focus {
+  box-shadow: var(--focus, 0 0 0 3px rgba(59,130,246,0.15));
+  z-index: 1;
+}
+
+.kavia-btn:active {
+  opacity: 0.97;
+  transform: translateY(1px) scale(0.99);
+}
+
+/* ========== Variants ========== */
+.btn-primary {
+  background: var(--primary, #3b82f6);
+  color: #fff;
+}
+.btn-primary:hover:enabled, .btn-primary:focus-visible:enabled {
+  background: #2563eb;
+}
+.btn-primary:active:enabled {
+  background: #1d4ed8;
+}
+
+.btn-secondary {
+  background: var(--surface, #fff);
+  color: var(--primary, #3b82f6);
+  border: 1.5px solid var(--primary, #3b82f6);
+}
+.btn-secondary:hover:enabled, .btn-secondary:focus-visible:enabled {
+  background: #f1f5fd;
+  color: #2563eb;
+  border-color: #2563eb;
+}
+.btn-secondary:active:enabled {
+  background: #e0e7ef;
+  border-color: #1d4ed8;
+  color: #1d4ed8;
+}
+
+.btn-ghost {
+  background: transparent;
+  color: var(--primary, #3b82f6);
+  border: none;
+}
+.btn-ghost:hover:enabled, .btn-ghost:focus-visible:enabled {
+  background: #eef3fa;
+  color: #2563eb;
+}
+.btn-ghost:active:enabled {
+  color: #1d4ed8;
+}
+
+.btn-danger {
+  background: var(--error, #EF4444);
+  color: #fff;
+}
+.btn-danger:hover:enabled, .btn-danger:focus-visible:enabled {
+  background: #dc2626;
+}
+.btn-danger:active:enabled {
+  background: #b91c1c;
+}
+
+/* ========== Sizes ========== */
+.btn-sm {
+  font-size: 0.96rem;
+  padding: 0.42rem 1rem;
+}
+.btn-md {
+  font-size: 1.04rem;
+  padding: 0.59rem 1.18rem;
+}
+.btn-lg {
+  font-size: 1.17rem;
+  padding: 0.76rem 1.65rem;
+}
+
+.btn-disabled,
+.kavia-btn:disabled {
+  opacity: 0.6!important;
+  cursor: not-allowed!important;
+  pointer-events: none;
+  background: #e5e9f0 !important;
+  color: #bcc3d0 !important;
+  border-color: #e5e9f0 !important;
+}
+
+/* ========== Spinner for Loading ========== */
+.btn-spinner {
+  width: 1em;
+  height: 1em;
+  border: 2.5px solid #fff;
+  border-top: 2.5px solid var(--primary, #3b82f6);
+  border-radius: 50%;
+  animation: btn-spin 0.7s linear infinite;
+  margin-right: 0.5em;
+  display: inline-block;
+  vertical-align: middle;
+  background: transparent;
+}
+.btn-danger .btn-spinner {
+  border-top-color: var(--error, #EF4444);
+}
+.btn-secondary .btn-spinner,
+.btn-ghost .btn-spinner {
+  border-top-color: var(--primary, #3b82f6);
+  border-color: #dbeafe;
+}
+
+@keyframes btn-spin {
+  to { transform: rotate(360deg); }
+}
+
+.btn-content-fade {
+  opacity: .6;
+}
+
+.kavia-btn:not([disabled]):active {
+  filter: brightness(0.98);
+}
