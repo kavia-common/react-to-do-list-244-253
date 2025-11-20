@@ -27,29 +27,26 @@
   transform: translateY(1px) scale(0.99);
 }
 
-/* ========== Variants ========== */
+/* ========== Variants/Tone/Weight ========== */
 .btn-primary {
   background: var(--primary, #3b82f6);
   color: #fff;
 }
-.btn-primary:hover:enabled, .btn-primary:focus-visible:enabled {
-  background: #2563eb;
-}
-.btn-primary:active:enabled {
-  background: #1d4ed8;
-}
+.btn-primary:hover:enabled, .btn-primary:focus-visible:enabled { background: #2563eb; }
+.btn-primary:active:enabled { background: #1d4ed8; }
 
-.btn-secondary {
+.btn-secondary, .btn-outline, .btn-soft {
   background: var(--surface, #fff);
   color: var(--primary, #3b82f6);
   border: 1.5px solid var(--primary, #3b82f6);
 }
-.btn-secondary:hover:enabled, .btn-secondary:focus-visible:enabled {
+.btn-secondary:hover:enabled, .btn-secondary:focus-visible:enabled,
+.btn-outline:hover:enabled, .btn-outline:focus-visible:enabled {
   background: #f1f5fd;
   color: #2563eb;
   border-color: #2563eb;
 }
-.btn-secondary:active:enabled {
+.btn-secondary:active:enabled, .btn-outline:active:enabled {
   background: #e0e7ef;
   border-color: #1d4ed8;
   color: #1d4ed8;
@@ -72,11 +69,20 @@
   background: var(--error, #EF4444);
   color: #fff;
 }
-.btn-danger:hover:enabled, .btn-danger:focus-visible:enabled {
-  background: #dc2626;
+.btn-danger:hover:enabled, .btn-danger:focus-visible:enabled { background: #dc2626; }
+.btn-danger:active:enabled { background: #b91c1c; }
+
+.btn-success, .btn-successfull {
+  background: var(--success, #06b6d4);
+  color: #fff;
 }
-.btn-danger:active:enabled {
-  background: #b91c1c;
+.btn-success:hover:enabled, .btn-success:focus-visible:enabled { background: #019cad; }
+.btn-success:active:enabled { background: #028790; }
+
+/* Full width support */
+.kavia-btn-fullwidth {
+  width: 100%;
+  display: flex;
 }
 
 /* ========== Sizes ========== */
@@ -93,8 +99,10 @@
   padding: 0.76rem 1.65rem;
 }
 
+/* ========== Disabled styles ========== */
 .btn-disabled,
-.kavia-btn:disabled {
+.kavia-btn:disabled,
+.kavia-btn[aria-disabled="true"] {
   opacity: 0.6!important;
   cursor: not-allowed!important;
   pointer-events: none;
@@ -124,10 +132,10 @@
   border-top-color: var(--primary, #3b82f6);
   border-color: #dbeafe;
 }
-
-@keyframes btn-spin {
-  to { transform: rotate(360deg); }
+.btn-success .btn-spinner {
+  border-top-color: var(--success, #06b6d4);
 }
+@keyframes btn-spin { to { transform: rotate(360deg); } }
 
 .btn-content-fade {
   opacity: .6;
@@ -135,4 +143,20 @@
 
 .kavia-btn:not([disabled]):active {
   filter: brightness(0.98);
+}
+
+/* Additional: aligns icons with label */
+.kavia-btn > span[style] {
+  display: inline-flex;
+  align-items: center;
+}
+
+/* Surface for soft/outline/secondary if needed */
+.btn-soft {
+  background: #eef3fa;
+}
+
+/* Remove text-selection on double click */
+.kavia-btn, .kavia-btn * {
+  user-select: none;
 }

@@ -84,7 +84,8 @@ function App() {
           />
           <Button
             type="submit"
-            variant="primary"
+            tone="primary"
+            weight="solid"
             size="md"
             aria-label="Add todo"
             disabled={!input.trim()}
@@ -122,7 +123,8 @@ function App() {
                   {task.text}
                 </span>
                 <Button
-                  variant="danger"
+                  tone="danger"
+                  weight="solid"
                   size="sm"
                   aria-label="Delete todo"
                   onClick={() => handleDeleteTask(task.id)}
